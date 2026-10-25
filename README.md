@@ -34,4 +34,7 @@ To remove the generated executable and object files:
 
 ## What I am working on
 
-- 
+- Writing the output to a file.
+- Making a function that checks whether a result is correct.
+- Implementing BKZ.
+- Optimize both LLL and BKZ and run tests on multiple examples to compare efficiency.
