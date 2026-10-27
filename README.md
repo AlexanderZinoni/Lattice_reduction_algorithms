@@ -8,6 +8,7 @@ This project implements LLL reduction using Gram–Schmidt orthogonalisation and
     ├── include/    # Header files (.h)
     ├── src/        # Source files (.c)
     ├── Makefile    # Build configuration
+    ├── matrix.txt  # Input matrix
     └── README.md
 
 ## Compilation
