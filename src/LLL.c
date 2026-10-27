@@ -81,6 +81,8 @@ bool verify_result(int *basis, size_t n, size_t k, double delta){
 		return false;
 	}
 
+	bool res = true; 
+
 	double *b_star = gram_schmidt(n,k,basis);
 	double *products = dot_prod_matrix(basis,b_star,n, k);
 
@@ -88,9 +90,7 @@ bool verify_result(int *basis, size_t n, size_t k, double delta){
 		for (size_t j = 0; j<i; j++){
 			if (fabs(products[i*k + j])>0.5){
 				printf("Matrix is not reduced.\n");
-				free(b_star);
-				free(products);
-				return false;
+				res = false;
 			}
 		}
 	}	
@@ -106,11 +106,7 @@ bool verify_result(int *basis, size_t n, size_t k, double delta){
 
 		if (delta * b_x_norm > b_x1_norm + mu_sq * b_x_norm){
 			printf("Lovasz condition false.\n");
-			free(b_x);
-			free(b_x1);
-			free(b_star);
-			free(products);
-			return false;
+			res = false;
 		}
 		free(b_x);
 		free(b_x1);
@@ -119,5 +115,5 @@ bool verify_result(int *basis, size_t n, size_t k, double delta){
 	free(b_star);
 	free(products);
 
-	return true;
+	return res;
 }
