@@ -22,7 +22,7 @@ double *dot_prod_matrix(int *b, double *b_star, size_t n, size_t k){
 
 void LLL_reduction(int *basis, size_t n, size_t k, double delta){
 	if (delta<= 0.25 || delta >=1.0){
-		printf("LLL Reduction no possible: delta must be in the interval (0.25, 1).\n");
+		printf("LLL Reduction not possible: delta must be in the interval (0.25, 1).\n");
 		return;
 	}
 
@@ -74,3 +74,50 @@ void LLL_reduction(int *basis, size_t n, size_t k, double delta){
 	free(products);
 }
 
+
+bool verify_result(int *basis, size_t n, size_t k, double delta){
+	if (delta<= 0.25 || delta >=1.0){
+		printf("LLL Reduction not possible: delta must be in the interval (0.25, 1).\n");
+		return false;
+	}
+
+	double *b_star = gram_schmidt(n,k,basis);
+	double *products = dot_prod_matrix(basis,b_star,n, k);
+
+	for (size_t i = 0; i<k; i++){
+		for (size_t j = 0; j<i; j++){
+			if (fabs(products[i*k + j])>0.5){
+				printf("Matrix is not reduced.\n");
+				free(b_star);
+				free(products);
+				return false;
+			}
+		}
+	}	
+
+
+	for (size_t x = 0; x+1<k; x++){
+		double *b_x = vec_from_col_double(b_star, n, k, x);
+		double *b_x1 = vec_from_col_double(b_star, n, k, x+1);
+		
+		double mu_sq = products[(x+1)*k+x]*products[(x+1)*k+x];
+		double b_x1_norm = dot_prod_double(b_x1,b_x1,n);
+		double b_x_norm = dot_prod_double(b_x,b_x,n);
+
+		if (delta * b_x_norm > b_x1_norm + mu_sq * b_x_norm){
+			printf("Lovasz condition false\n");
+			free(b_x);
+			free(b_x1);
+			free(b_star);
+			free(products);
+			return false;
+		}
+		free(b_x);
+		free(b_x1);
+	}
+
+	free(b_star);
+	free(products);
+
+	return true;
+}

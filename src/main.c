@@ -19,11 +19,14 @@ int main(int argc, char **argv){
 	printf("Input Matrix: \n");
 	print_mat(mat,n,k);
 
-
 	LLL_reduction(mat, n, k, 0.75);
 
 	printf("\nLLL reduced matrix:\n");
 	print_mat(mat,n,k);
+
+	if (verify_result(mat, n, k, 0.75)){
+		printf("\nReduction Successful!\n");
+	}
 
 	free(mat);
 	return 1;
