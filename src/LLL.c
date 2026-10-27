@@ -105,7 +105,7 @@ bool verify_result(int *basis, size_t n, size_t k, double delta){
 		double b_x_norm = dot_prod_double(b_x,b_x,n);
 
 		if (delta * b_x_norm > b_x1_norm + mu_sq * b_x_norm){
-			printf("Lovasz condition false\n");
+			printf("Lovasz condition false.\n");
 			free(b_x);
 			free(b_x1);
 			free(b_star);
